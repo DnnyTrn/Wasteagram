@@ -20,13 +20,13 @@ class _DetailScreenState extends State<DetailScreen> {
     final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
     image = File(pickedFile.path);
 
-    try {
-      await firebase_storage.FirebaseStorage.instance
-          .ref(pickedFile.path)
-          .putFile(image);
-    } on firebase_core.FirebaseException catch (error) {
-      print(error);
-    }
+    // try {
+    //   await firebase_storage.FirebaseStorage.instance
+    //       .ref(pickedFile.path)
+    //       .putFile(image);
+    // } on firebase_core.FirebaseException catch (error) {
+    //   print(error);
+    // }
 
     // final downloadurl = firebaseStorageInstance.ref().getDownloadURL();
     setState(() {});

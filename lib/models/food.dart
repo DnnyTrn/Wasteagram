@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Food {
-  final String name, height;
-  final String mass;
-  final String created;
-  DocumentReference reference;
+  final String imageUrl, location, quantity, created;
 
   Food(
-      {this.name = 'null name',
-      this.height = 'null ht',
-      this.mass = 'null mass',
-      this.created,
-      this.reference});
+      {this.imageUrl = "null url",
+      this.location = "null location",
+      this.created = "null created",
+      this.quantity = "null quantity"});
+
+  factory Food.fromDocument(DocumentSnapshot document) {
+    return Food.fromJson(document.data());
+  }
 
   factory Food.fromJson(Map<String, dynamic> json) {
     return Food(
-        name: json['userId'].toString(),
-        height: json['id'].toString(),
-        mass: json['title'].toString(),
-        created: json['completed'].toString());
+        imageUrl: json['imageUrl'].toString(),
+        location: json['location'].toString(),
+        created: json['created'].toString(),
+        quantity: json['quantity'].toString());
   }
 }

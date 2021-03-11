@@ -17,14 +17,13 @@ class _DetailScreenState extends State<DetailScreen> {
   void pickImage() async {
     PickedFile pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
-    image = File(pickedFile.path);
-
+    if (pickedFile == null) return; //user canceled image pick
     try {
+      image = File(pickedFile.path);
       Reference uploadReference =
           FirebaseStorage.instance.ref(basename(image.path));
       await uploadReference.putFile(image);
       String downloadUrl = await uploadReference.getDownloadURL();
-      
     } on FirebaseException catch (error) {
       print(error);
     }

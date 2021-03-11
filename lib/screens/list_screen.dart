@@ -51,9 +51,12 @@ class ListViewBuilder extends StatelessWidget {
         snapshot.data.docs.length > 0) {
       return new ListView(
           children: snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+        final food = Food.fromJson(document.data());
         return new ListTile(
-          title: new Text(document.data()['name']),
-          subtitle: new Text(document.data()['weight'].toString()),
+          trailing: new Text('location ${food.location}'),
+          leading: new Text('quantity ${food.quantity}'),
+          title: new Text('url ${food.imageUrl}'),
+          subtitle: new Text('${food.created}'),
         );
       }).toList());
     }

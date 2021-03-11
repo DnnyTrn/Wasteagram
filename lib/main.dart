@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wasteagram/screens/detail_screen.dart';
 import 'package:wasteagram/screens/list_screen.dart';
+import 'screens/new_post_screen.dart';
 import 'screens/share_location_screen.dart';
 import 'widgets/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,26 +15,30 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Wasteagram',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      routes: {
+        '/': (context) => HomeScaffold(),
+        NewPostScreen.routeName: (context) => NewPostScreen(),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class HomeScaffold extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeScaffoldState createState() => _HomeScaffoldState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeScaffoldState extends State<HomeScaffold> {
   static const List<Widget> tabs = [
     Icon(Icons.face_retouching_natural),
     Icon(Icons.text_snippet_outlined),
@@ -42,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static final List<Widget> screens = [
     ListScreen(),
     ShareLocationScreen(),
-    Text('3rd screen')
+    DetailScreen(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -50,9 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
       length: tabs.length,
       scaffold: Scaffold(
         appBar: AppBar(bottom: TabBar(tabs: tabs)),
-        body: TabBarView(
-          children: screens,
-        ),
+        body: TabBarView(children: screens),
+        floatingActionButton: AddToDatabaseButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

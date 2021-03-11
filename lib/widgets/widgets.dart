@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:wasteagram/screens/new_post_screen.dart';
 
 // import 'package:wasteagram/screens/share_location_screen.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'dart:io';
+
+
+class AddToDatabaseButton extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context, NewPostScreen.routeName);
+      },
+      child: Icon(Icons.add),
+    );
+  }
+}
 
 class ShareImageButton extends StatelessWidget {
   final Function shareImage;

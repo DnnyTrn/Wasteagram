@@ -46,9 +46,9 @@ class _HomeScaffoldState extends State<HomeScaffold> {
   ];
 
   static final List<Widget> screens = [
+    DetailScreen(),
     ListScreen(),
     ShareLocationScreen(),
-    DetailScreen(),
   ];
   @override
   Widget build(BuildContext context) {

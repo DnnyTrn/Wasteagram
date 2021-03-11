@@ -18,8 +18,9 @@ class ListScreen extends StatefulWidget {
 class _ListScreenState extends State<ListScreen> {
   @override
   Widget build(BuildContext context) {
-    CollectionReference firestore =
-        FirebaseFirestore.instance.collection('food');
+    Query firestore = FirebaseFirestore.instance
+        .collection('food')
+        .orderBy("created", descending: true);
     return StreamBuilder(
         stream: firestore.snapshots(),
         builder: (context, snapshot) {
@@ -53,10 +54,8 @@ class ListViewBuilder extends StatelessWidget {
           children: snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
         final food = Food.fromJson(document.data());
         return new ListTile(
-          trailing: new Text('location ${food.location}'),
-          leading: new Text('quantity ${food.quantity}'),
-          title: new Text('url ${food.imageUrl}'),
-          subtitle: new Text('${food.created}'),
+          title: new Text('${food.created}'),
+          trailing: new Text('${food.quantity}'),
         );
       }).toList());
     }

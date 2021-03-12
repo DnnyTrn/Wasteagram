@@ -44,7 +44,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
         child: Column(children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.file(File(imagePath)),
+            child: SizedBox(height: 225, child: Image.file(File(imagePath))),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

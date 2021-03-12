@@ -19,9 +19,9 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Column(
           children: [
             Text('${food.created}'),
-            Image.network('${food.imageUrl}'),
+            SizedBox(height: 250, child: Image.network('${food.imageUrl}')),
             Text('Items: ${food.quantity}'),
-            Text('(${food.location})'),
+            Text('(${food.longitude} ${food.latitude})'),
           ],
         ),
       ),

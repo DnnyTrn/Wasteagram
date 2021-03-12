@@ -66,7 +66,8 @@ class ListViewBuilder extends StatelessWidget {
                 snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
           final food = Food.fromJson(document.data());
           return new ListTile(
-            onTap: () => Navigator.pushNamed(context, DetailScreen.routeName),
+            onTap: () => Navigator.pushNamed(context, DetailScreen.routeName,
+                arguments: food),
             title: new Text('${food.created}'),
             trailing: new Text('${food.quantity}'),
           );

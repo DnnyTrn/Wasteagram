@@ -9,7 +9,6 @@ class MyApp extends StatelessWidget {
   static final routes = {
     '/': (context) => ListScreen(),
     DetailScreen.routeName: (context) => DetailScreen(),
-    ListScreen.routeName: (context) => ListScreen(),
     NewPostScreen.routeName: (context) => NewPostScreen(),
   };
 
@@ -27,12 +26,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScaffold extends StatefulWidget {
+class LoadingScaffold extends StatefulWidget {
   @override
-  HomeScaffoldState createState() => HomeScaffoldState();
+  LoadingScaffoldState createState() => LoadingScaffoldState();
 }
 
-class HomeScaffoldState extends State<HomeScaffold> {
+class LoadingScaffoldState extends State<LoadingScaffold> {
   int documentCount = 0;
 
   @override

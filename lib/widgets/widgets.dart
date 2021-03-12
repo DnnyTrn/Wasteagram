@@ -6,7 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart';
-// import 'package:wasteagram/screens/share_location_screen.dart';
+
+AppBar wasteagramAppBar() {
+  return AppBar(title: Text('Wasteagram'));
+}
 
 // Tapping on the large button enables an employee to capture a photo, or select a photo from the device's photo gallery.
 class GetPhoto extends StatelessWidget {

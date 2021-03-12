@@ -21,7 +21,6 @@ class ListScreen extends StatefulWidget {
 }
 
 class ListScreenState extends State<ListScreen> {
-  int documentCount = 0;
   @override
   Widget build(BuildContext context) {
     Query firestore = FirebaseFirestore.instance
@@ -33,18 +32,17 @@ class ListScreenState extends State<ListScreen> {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
             case ConnectionState.none:
-              return LoadingWidget();
+              return LoadingScaffold();
             case ConnectionState.active:
             case ConnectionState.done:
-              return ListViewBuilder(
-                  snapshot: snapshot, documentCount: documentCount);
+              return ListViewBuilder(snapshot: snapshot);
           }
           if (snapshot.hasError) {
             ErrorWidget.builder = (FlutterErrorDetails details) {
               return ErrorWidget(details.exception);
             };
           }
-          return LoadingWidget();
+          return LoadingScaffold();
         });
   }
 }
@@ -52,7 +50,7 @@ class ListScreenState extends State<ListScreen> {
 class ListViewBuilder extends StatelessWidget {
   final snapshot;
   int documentCount;
-  ListViewBuilder({@required this.snapshot, this.documentCount});
+  ListViewBuilder({@required this.snapshot});
   @override
   Widget build(BuildContext context) {
     if (snapshot.hasData &&
@@ -76,21 +74,6 @@ class ListViewBuilder extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       );
     }
-    return Scaffold(
-      appBar: AppBar(title: Text('Wastegram - $documentCount')),
-      body: LoadingWidget(),
-      floatingActionButton: GetPhoto(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+    return LoadingScaffold();
   }
 }
-
-//  try {
-//       await db.insert(
-//         TABLE_NAME,
-//         journal.toMap(),
-//         conflictAlgorithm: ConflictAlgorithm.replace,
-//       );
-//     } catch (err) {
-//       throw (err);
-//     }

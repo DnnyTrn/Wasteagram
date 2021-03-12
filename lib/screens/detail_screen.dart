@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wasteagram/models/food.dart';
+import 'package:wasteagram/widgets/widgets.dart';
 
 class DetailScreen extends StatefulWidget {
   static String routeName = 'DetailScreen';
@@ -12,13 +13,13 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     final Food food = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: wasteagramAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             Text('${food.created}'),
-            Text('${food.imageUrl}'),
+            Image.network('${food.imageUrl}'),
             Text('Items: ${food.quantity}'),
             Text('(${food.location})'),
           ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:wasteagram/screens/detail_screen.dart';
 import 'package:wasteagram/screens/list_screen.dart';
+import 'package:wasteagram/widgets/keyboard.dart';
 import 'screens/new_post_screen.dart';
 import 'screens/share_location_screen.dart';
 import 'widgets/widgets.dart';
@@ -15,6 +17,12 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  static final routes = {
+    '/': (context) => HomeScaffold(),
+    DetailScreen.routeName: (context) => DetailScreen(),
+    ListScreen.routeName: (context) => ListScreen(),
+    NewPostScreen.routeName: (context) => NewPostScreen(),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +33,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      routes: {
-        '/': (context) => HomeScaffold(),
-        NewPostScreen.routeName: (context) => NewPostScreen(),
-      },
+      routes: routes,
     );
   }
 }
@@ -39,27 +44,15 @@ class HomeScaffold extends StatefulWidget {
 }
 
 class _HomeScaffoldState extends State<HomeScaffold> {
-  static const List<Widget> tabs = [
-    Icon(Icons.face_retouching_natural),
-    Icon(Icons.text_snippet_outlined),
-    Icon(Icons.casino_outlined)
-  ];
-
-  static final List<Widget> screens = [
-    DetailScreen(),
-    ListScreen(),
-    ShareLocationScreen(),
-  ];
   @override
   Widget build(BuildContext context) {
-    return MainTabController(
-      length: tabs.length,
-      scaffold: Scaffold(
-        appBar: AppBar(bottom: TabBar(tabs: tabs)),
-        body: TabBarView(children: screens),
-        floatingActionButton: AddToDatabaseButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(),
+      body: ListScreen(),
+      // body: NewPostScreen(),
+      floatingActionButton: GetPhoto(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -11,7 +11,10 @@ import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'detail_screen.dart';
+
 class ListScreen extends StatefulWidget {
+  static String routeName = "ListScreen";
   State createState() => _ListScreenState();
 }
 
@@ -54,6 +57,7 @@ class ListViewBuilder extends StatelessWidget {
           children: snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
         final food = Food.fromJson(document.data());
         return new ListTile(
+          onTap: () => Navigator.pushNamed(context, DetailScreen.routeName),
           title: new Text('${food.created}'),
           trailing: new Text('${food.quantity}'),
         );

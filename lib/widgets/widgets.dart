@@ -1,32 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:wasteagram/screens/new_post_screen.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path/path.dart';
 // import 'package:wasteagram/screens/share_location_screen.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'dart:io';
 
-
-class AddToDatabaseButton extends StatelessWidget {
+// Tapping on the large button enables an employee to capture a photo, or select a photo from the device's photo gallery.
+class GetPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(context, NewPostScreen.routeName);
+        pickImage(context);
       },
       child: Icon(Icons.add),
     );
   }
+
+  void pickImage(BuildContext context) async {
+    PickedFile pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    if (pickedFile == null) return; //user canceled image pick
+
+    Navigator.pushNamed(context, NewPostScreen.routeName,
+        arguments: pickedFile.path);
+  }
 }
 
 class ShareImageButton extends StatelessWidget {
-  final Function shareImage;
-  const ShareImageButton({Key key, @required this.shareImage})
-      : super(key: key);
+  final String imagePath;
+  File image;
+  ShareImageButton({Key key, @required this.imagePath}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       child: Text('Share'),
-      onPressed: () => shareImage(),
+      onPressed: _uploadImage,
     );
+  }
+
+  void _uploadImage() async {
+    try {
+      image = File(imagePath);
+      Reference uploadReference =
+          FirebaseStorage.instance.ref(basename(imagePath));
+      await uploadReference.putFile(image);
+
+      String downloadUrl = await uploadReference.getDownloadURL();
+    } on FirebaseException catch (error) {
+      print(error);
+    }
   }
 }
 
@@ -55,31 +80,5 @@ class NullWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Center(child: Column(children: [Text('null widget')])));
-  }
-}
-
-class MainTabController extends StatelessWidget {
-  final int length, initialIndex;
-  final Widget scaffold;
-  final List<Widget> tabs, screens;
-
-  const MainTabController({
-    Key key,
-    this.length = 0,
-    this.initialIndex = 0,
-    this.scaffold,
-    List<Widget> tabs = const <Widget>[],
-    List<Widget> screens = const <Widget>[],
-  })  : this.screens = screens,
-        this.tabs = tabs,
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: this.initialIndex,
-      length: this.length,
-      child: this.scaffold,
-    );
   }
 }

@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:wasteagram/models/food.dart';
 
 AppBar wasteagramAppBar() => AppBar(title: Text('Wasteagram'));
 
@@ -32,41 +33,20 @@ class GetPhoto extends StatelessWidget {
 }
 
 class ShareImageButton extends StatelessWidget {
-  final String imagePath;
+  Function buttonFunction;
+  ShareImageButton({
+    this.buttonFunction,
+    Key key,
+  }) : super(key: key);
 
-  ShareImageButton({Key key, @required this.imagePath}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       child: Icon(Icons.cloud_upload, size: 60),
-      onPressed: _uploadImage,
+      onPressed: buttonFunction,
       style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20)),
     );
-  }
-
-  void _uploadImage() async {
-    try {
-      File image = File(imagePath);
-      Reference uploadReference =
-          FirebaseStorage.instance.ref(DateTime.now().toString());
-      await uploadReference.putFile(image);
-
-      String downloadUrl = await uploadReference.getDownloadURL();
-      LocationData _currentLocation = await retrieveLocation();
-
-      Food newFoodToFire = Food(
-        imageUrl: downloadUrl,
-        created: DateTime.now().toIso8601String(),
-        quantity: "0",
-        longitude: _currentLocation.longitude.toString(),
-        latitude: _currentLocation.latitude.toString(),
-      );
-      
-      FirebaseFirestore.instance.collection('food').add(newFoodToFire.toMap());
-    } on FirebaseException catch (error) {
-      print(error);
-    }
   }
 }
 

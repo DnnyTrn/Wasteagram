@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
+import 'package:location/location.dart';
 import 'package:path/path.dart';
+import 'package:wasteagram/models/food.dart';
 import 'package:wasteagram/widgets/widgets.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
@@ -16,14 +19,18 @@ class NewPostScreen extends StatefulWidget {
 
 class _NewPostScreenState extends State<NewPostScreen> {
   GlobalKey<FormState> formKey;
+  String imagePath;
+  Food sendFood;
   void initState() {
     super.initState();
     formKey = GlobalKey<FormState>();
+    sendFood = Food();
   }
 
   Widget build(BuildContext context) {
-    final imagePath = ModalRoute.of(context).settings.arguments;
+    imagePath = ModalRoute.of(context).settings.arguments;
     assert(imagePath != null);
+
     final FocusNode _nodeText1 = FocusNode();
     KeyboardActionsConfig _buildConfig(BuildContext context) {
       return KeyboardActionsConfig(
@@ -36,7 +43,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: ShareImageButton(imagePath: imagePath),
+      floatingActionButton: ShareImageButton(buttonFunction: uploadImage),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(),
       body: KeyboardActions(
@@ -48,28 +55,54 @@ class _NewPostScreenState extends State<NewPostScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              focusNode: _nodeText1,
-              decoration: InputDecoration(
-                  hintText: "Number of items", border: OutlineInputBorder()),
-              keyboardType: TextInputType.number,
+            child: Form(
+              key: formKey,
+              child: TextFormField(
+                focusNode: _nodeText1,
+                validator: validateField,
+                onSaved: (value) {
+                  sendFood.quantity = int.parse(value);
+                  Navigator.of(context).pop();
+                },
+                decoration: InputDecoration(
+                    hintText: "Number of items", border: OutlineInputBorder()),
+                keyboardType: TextInputType.number,
+              ),
             ),
           ),
         ]),
       ),
-      // body: Form(
-      //     key: formKey,
-      //     child: Column(
-      //       children: [
-      //         Image.network(imageUrl),
-      //       ],
-      //     )),
     );
   }
 
-  List<Widget> formFields(BuildContext context) {
-    return [TextFormField()];
+  void uploadImage() async {
+    // validate form
+    final formState = formKey.currentState;
+    if (formState.validate() == false) {
+      return;
+    }
+    formKey.currentState.save();
+
+    try {
+      // send image to fire storage
+      Reference uploadReference =
+          FirebaseStorage.instance.ref(DateTime.now().toString());
+      await uploadReference.putFile(File(imagePath));
+
+      // preparing document to send to firestore
+      sendFood.created = DateTime.now().toIso8601String();
+      sendFood.imageUrl = await uploadReference.getDownloadURL();
+      LocationData _currentLocation = await retrieveLocation();
+      assert(_currentLocation != null);
+      sendFood.longitude = _currentLocation.longitude.toString();
+      sendFood.latitude = _currentLocation.latitude.toString();
+
+      FirebaseFirestore.instance.collection('food').add(sendFood.toMap());
+    } on FirebaseException catch (error) {
+      print(error);
+    }
   }
 
-  // Navigator.of(context).pop();
+  String validateField(value) =>
+      value.isEmpty ? 'This field cannot be blank.' : null;
 }

@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class Food {
-  final String imageUrl, longitude, latitude, quantity, created;
+  String imageUrl, longitude, latitude, created;
+  int quantity;
 
   Food({
     this.imageUrl = "null url",
     this.longitude = "null longitude",
     this.latitude = "null latitude",
     this.created = "null created",
-    this.quantity = "null quantity",
+    this.quantity = -1,
   });
 
   factory Food.fromDocument(DocumentSnapshot document) {
@@ -25,17 +26,16 @@ class Food {
         longitude: json['longitude'].toString(),
         latitude: json['latitude'].toString(),
         created: _created.toString(),
-        quantity: json['quantity'].toString());
+        quantity: json['quantity']);
   }
 
   Map<String, dynamic> toMap() {
-    final int _quantity = int.parse(this.quantity);
     final DateTime _created = DateTime.parse(this.created);
 
     return {
       "imageUrl": this.imageUrl,
       "created": _created,
-      "quantity": _quantity,
+      "quantity": this.quantity,
       "longitude": this.longitude,
       "latitude": this.latitude,
     };

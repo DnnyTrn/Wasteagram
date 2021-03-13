@@ -1,18 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:wasteagram/app.dart';
-import 'package:wasteagram/main.dart';
 import '../models/food.dart';
 import 'package:wasteagram/widgets/widgets.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:share/share.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
 import 'detail_screen.dart';
 
 class ListScreen extends StatefulWidget {
@@ -49,10 +40,10 @@ class ListScreenState extends State<ListScreen> {
 
 class ListViewBuilder extends StatelessWidget {
   final snapshot;
-  int documentCount;
   ListViewBuilder({@required this.snapshot});
   @override
   Widget build(BuildContext context) {
+    int documentCount;
     if (snapshot.hasData &&
         snapshot.data.docs != null &&
         snapshot.data.docs.length > 0) {

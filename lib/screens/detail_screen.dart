@@ -14,15 +14,17 @@ class _DetailScreenState extends State<DetailScreen> {
     final Food food = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: wasteagramAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Text('${food.created}'),
-            SizedBox(height: 250, child: Image.network('${food.imageUrl}')),
-            Text('Items: ${food.quantity}'),
-            Text('(${food.longitude} ${food.latitude})'),
-          ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text('${food.created}'),
+              SizedBox(height: 250, child: Image.network('${food.imageUrl}')),
+              Text('Items: ${food.quantity}'),
+              Text('(${food.longitude} ${food.latitude})'),
+            ],
+          ),
         ),
       ),
     );

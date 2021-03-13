@@ -5,7 +5,6 @@ import 'package:wasteagram/widgets/widgets.dart';
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'detail_screen.dart';
-import 'package:intl/intl.dart';
 import 'package:wasteagram/style.dart';
 
 class ListScreen extends StatefulWidget {

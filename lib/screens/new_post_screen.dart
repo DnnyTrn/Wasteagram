@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:path/path.dart';
 import 'package:wasteagram/models/food.dart';
 import 'package:wasteagram/widgets/widgets.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';

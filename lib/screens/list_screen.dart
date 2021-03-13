@@ -5,6 +5,8 @@ import 'package:wasteagram/widgets/widgets.dart';
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'detail_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:wasteagram/style.dart';
 
 class ListScreen extends StatefulWidget {
   static String routeName = "ListScreen";
@@ -53,11 +55,11 @@ class ListViewBuilder extends StatelessWidget {
         body: new ListView(
             children:
                 snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
-          final food = Food.fromJson(document.data());
+          final food = Food.fromMap(document.data());
           return new ListTile(
             onTap: () => Navigator.pushNamed(context, DetailScreen.routeName,
                 arguments: food),
-            title: new Text('${food.created}'),
+            title: new Text('${dateFormat(food.created)}'),
             trailing: new Text('${food.quantity}'),
           );
         }).toList()),

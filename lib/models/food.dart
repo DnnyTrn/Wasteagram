@@ -1,40 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 
 class Food {
-  String imageUrl, longitude, latitude, created;
+  String imageUrl, longitude, latitude;
+  DateTime created;
   int quantity;
 
   Food({
     this.imageUrl = "null url",
     this.longitude = "null longitude",
     this.latitude = "null latitude",
-    this.created = "null created",
     this.quantity = -1,
+    this.created,
   });
 
   factory Food.fromDocument(DocumentSnapshot document) {
-    return Food.fromJson(document.data());
+    return Food.fromMap(document.data());
   }
 
-  factory Food.fromJson(Map<String, dynamic> json) {
-    final _created =
-        DateFormat("EEEE, MMM. d").format(json['created'].toDate());
+  factory Food.fromMap(Map<String, dynamic> map) {
+    var _created = map['created'];
+    // convert Firestore Timestamp to expected DateTime
+    if (map['created'] is Timestamp) _created = _created.toDate();
 
     return Food(
-        imageUrl: json['imageUrl'].toString(),
-        longitude: json['longitude'].toString(),
-        latitude: json['latitude'].toString(),
-        created: _created.toString(),
-        quantity: json['quantity']);
+        imageUrl: map['imageUrl'].toString(),
+        longitude: map['longitude'].toString(),
+        latitude: map['latitude'].toString(),
+        created: _created,
+        quantity: map['quantity']);
   }
 
   Map<String, dynamic> toMap() {
-    final DateTime _created = DateTime.parse(this.created);
-
     return {
       "imageUrl": this.imageUrl,
-      "created": _created,
+      "created": this.created,
       "quantity": this.quantity,
       "longitude": this.longitude,
       "latitude": this.latitude,

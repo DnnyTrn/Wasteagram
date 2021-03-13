@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:wasteagram/app.dart';
 import 'package:wasteagram/main.dart';
 
 void main() {

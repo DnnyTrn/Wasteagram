@@ -40,7 +40,12 @@ class LoadingScaffoldState extends State<LoadingScaffold> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('Wasteagram - $documentCount')),
       body: LoadingWidget(),
-      floatingActionButton: GetPhoto(),
+      floatingActionButton: Semantics(
+        child: GetPhoto(),
+        button: true,
+        enabled: true,
+        onTapHint: 'this button opens the device\'s image gallery',
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

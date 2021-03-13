@@ -55,11 +55,16 @@ class ListViewBuilder extends StatelessWidget {
             children:
                 snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
           final food = Food.fromMap(document.data());
-          return new ListTile(
-            onTap: () => Navigator.pushNamed(context, DetailScreen.routeName,
-                arguments: food),
-            title: new Text('${dateFormat(food.created)}'),
-            trailing: new Text('${food.quantity}'),
+          return Semantics(
+            button: true,
+            onTapHint:
+                "Post Created: ${dateFormat(food.created)} Quantity: ${food.quantity} Tap to observe more details about the post",
+            child: new ListTile(
+              onTap: () => Navigator.pushNamed(context, DetailScreen.routeName,
+                  arguments: food),
+              title: new Text('${dateFormat(food.created)}'),
+              trailing: new Text('${food.quantity}'),
+            ),
           );
         }).toList()),
         floatingActionButton: GetPhoto(),

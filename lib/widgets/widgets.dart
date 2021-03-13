@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:wasteagram/models/food.dart';
 import 'package:wasteagram/screens/new_post_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:path/path.dart';
-import 'package:wasteagram/models/food.dart';
 
 AppBar wasteagramAppBar() => AppBar(title: Text('Wasteagram'));
 
@@ -18,7 +11,7 @@ class GetPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () => pickImage(context),
-      child: Icon(Icons.add),
+      child: Icon(Icons.photo_camera),
     );
   }
 
@@ -33,7 +26,7 @@ class GetPhoto extends StatelessWidget {
 }
 
 class ShareImageButton extends StatelessWidget {
-  Function buttonFunction;
+  final Function buttonFunction;
   ShareImageButton({
     this.buttonFunction,
     Key key,
@@ -41,11 +34,17 @@ class ShareImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: Icon(Icons.cloud_upload, size: 60),
-      onPressed: buttonFunction,
-      style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20)),
+    return Semantics(
+      onTapHint:
+          "this button saves and uploads the post. After successful save, screen will return back to home screen",
+      enabled: true,
+      button: true,
+      child: ElevatedButton(
+        child: Icon(Icons.cloud_upload, size: 60),
+        onPressed: buttonFunction,
+        style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20)),
+      ),
     );
   }
 }
@@ -81,30 +80,13 @@ Future<LocationData> retrieveLocation() async {
   return locationData;
 }
 
-class GetImageButton extends StatelessWidget {
-  final Function pickImage;
-  const GetImageButton({Key key, @required this.pickImage}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        child: Text('Select Image'),
-        onPressed: () => pickImage(),
-      ),
-    );
-  }
-}
-
 class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Center(child: CircularProgressIndicator());
-  }
-}
-
-class NullWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Center(child: Column(children: [Text('null widget')])));
+    return Semantics(
+        image: false,
+        onTapHint:
+            "content is currently loading or is unavailable at this time",
+        button: false,
+        child: Center(child: CircularProgressIndicator()));
   }
 }

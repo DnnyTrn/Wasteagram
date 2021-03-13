@@ -55,16 +55,21 @@ class _NewPostScreenState extends State<NewPostScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Form(
               key: formKey,
-              child: TextFormField(
-                focusNode: _nodeText1,
-                validator: validateField,
-                onSaved: (value) {
-                  sendFood.quantity = int.parse(value);
-                  Navigator.of(context).pop();
-                },
-                decoration: InputDecoration(
-                    hintText: "Number of items", border: OutlineInputBorder()),
-                keyboardType: TextInputType.number,
+              child: Semantics(
+                textField: true,
+                onTapHint: "Enter number of items on the keypad",
+                child: TextFormField(
+                  focusNode: _nodeText1,
+                  validator: validateField,
+                  onSaved: (value) {
+                    sendFood.quantity = int.parse(value);
+                    Navigator.of(context).pop();
+                  },
+                  decoration: InputDecoration(
+                      hintText: "Number of items",
+                      border: OutlineInputBorder()),
+                  keyboardType: TextInputType.number,
+                ),
               ),
             ),
           ),

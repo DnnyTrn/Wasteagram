@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wasteagram/models/food.dart';
 import 'package:wasteagram/widgets/widgets.dart';
+import 'package:wasteagram/style.dart';
 
 class DetailScreen extends StatefulWidget {
   static String routeName = 'DetailScreen';
@@ -19,10 +20,16 @@ class _DetailScreenState extends State<DetailScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text('${food.created}'),
-              SizedBox(height: 250, child: Image.network('${food.imageUrl}')),
+              Text('${dateFormat(food.created)}'),
+              Semantics(
+                  onTapHint: "image of the post",
+                  image: true,
+                  child: SizedBox(
+                      height: 250, child: Image.network('${food.imageUrl}'))),
               Text('Items: ${food.quantity}'),
-              Text('(${food.longitude} ${food.latitude})'),
+              Semantics(
+                  onTapHint: "Longitude and Latiude of when the post was saved",
+                  child: Text('(${food.longitude} ${food.latitude})')),
             ],
           ),
         ),

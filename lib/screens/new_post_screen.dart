@@ -90,7 +90,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
       await uploadReference.putFile(File(imagePath));
 
       // preparing document to send to firestore
-      sendFood.created = DateTime.now().toIso8601String();
+      sendFood.created = DateTime.now();
       sendFood.imageUrl = await uploadReference.getDownloadURL();
       LocationData _currentLocation = await retrieveLocation();
       assert(_currentLocation != null);

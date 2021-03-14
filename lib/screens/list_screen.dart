@@ -66,8 +66,9 @@ class ListViewBuilder extends StatelessWidget {
             child: new ListTile(
               onTap: () => Navigator.pushNamed(context, DetailScreen.routeName,
                   arguments: food),
-              title: new Text('${dateFormat(food.created)}'),
-              trailing: new Text('${food.quantity}'),
+              title: new Text('${dateFormat(food.created)}',
+                  style: Styles.dateStyle),
+              trailing: new Text('${food.quantity}', style: Styles.dateStyle),
             ),
           );
         }).toList()),

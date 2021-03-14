@@ -20,16 +20,21 @@ class _DetailScreenState extends State<DetailScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text('${dateFormat(food.created)}'),
+              Text('${dateFormat(food.created)}', style: Styles.titleStyle),
               Semantics(
                   onTapHint: "image of the post",
                   image: true,
-                  child: SizedBox(
-                      height: 250, child: Image.network('${food.imageUrl}'))),
-              Text('Items: ${food.quantity}'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: SizedBox(
+                        height: 250, child: Image.network('${food.imageUrl}')),
+                  )),
+              Text('Items: ${food.quantity}', style: Styles.itemStyle),
+              SizedBox(height: 10),
               Semantics(
                   onTapHint: "Longitude and Latiude of when the post was saved",
-                  child: Text('(${food.longitude} ${food.latitude})')),
+                  child: Text('(${food.longitude} ${food.latitude})',
+                      style: Styles.bodyStyle)),
             ],
           ),
         ),

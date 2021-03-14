@@ -44,13 +44,17 @@ class ListViewBuilder extends StatelessWidget {
   ListViewBuilder({@required this.snapshot});
   @override
   Widget build(BuildContext context) {
-    int documentCount;
     if (snapshot.hasData &&
         snapshot.data.docs != null &&
         snapshot.data.docs.length > 0) {
-      documentCount = snapshot.data.docs.length;
+      int documentCount = snapshot.data.docs.length;
+      int wasteCount = 0;
+      snapshot.data.docs.forEach((doc) {
+        wasteCount += doc["quantity"];
+      });
       return Scaffold(
-        appBar: AppBar(title: Text('Wasteagram - $documentCount')),
+        appBar: AppBar(
+            title: Text('Wasteagram ($documentCount) Wasted: $wasteCount')),
         body: new ListView(
             children:
                 snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
